@@ -1,10 +1,13 @@
-const express = require('express')
-const app = express()
+import { httpServer } from "./app.js";
 
-app.get('/', (request, response) => {
-    response.send('Hi there from express!')
-})
+const startServer = () => {
+    httpServer.listen(8000, () => {
+      console.log("⚙️  Server is running on port: " + 8000);
+    });
+};
 
-app.listen(8000, () => {
-    console.log('Listen on the port 3000...')
-})
+try {
+    startServer();
+  } catch (err) {
+    console.log("connect error: ", err);
+  }
