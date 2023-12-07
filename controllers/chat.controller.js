@@ -1,4 +1,4 @@
-import {asyncHandler} from "../utils/async.utils.js";
+import {asyncHandler} from "../utils/asyncHandler.utils.js";
 const getAllChats = asyncHandler(async (req, res) => {
   
     return res
