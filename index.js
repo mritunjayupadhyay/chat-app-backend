@@ -10,4 +10,4 @@ try {
     startServer();
   } catch (err) {
     console.log("connect error: ", err);
-  }
+}
