@@ -1,4 +1,5 @@
 import { httpServer } from "./app.js";
+import {connectDB} from "./db/index.js";
 
 const startServer = () => {
     httpServer.listen(8000, () => {
@@ -7,6 +8,7 @@ const startServer = () => {
 };
 
 try {
+    await connectDB();
     startServer();
   } catch (err) {
     console.log("connect error: ", err);

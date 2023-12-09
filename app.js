@@ -3,7 +3,7 @@ import cors from "cors";
 
 import chatRouter from "./routes/chat.routes.js";
 import userRouter from "./routes/users.route.js";
-import { errorHandler } from "./middlewares/error.middleware.js";
+import { errorHandler } from "./middlewares/error.middlewares.js";
 
 import { createServer } from "http";
 const app = express();
