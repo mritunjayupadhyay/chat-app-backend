@@ -5,11 +5,10 @@ import {ApiResponse} from "../utils/ApiResponse.utils.js";
 
 const getUser = asyncHandler(async (req, res) => {
   
-  const { email, username } = req.query;
-  console.log("email: ", email, username);
+  const {  username } = req.query;
 
   const user = await User.findOne({
-    $or: [{ username }, { email }],
+    username,
   });
     return res
       .status(200)
@@ -19,21 +18,19 @@ const getUser = asyncHandler(async (req, res) => {
   });
 
   const registerUser = asyncHandler(async (req, res) => {
-    const { email, username, password, role, name } = req.body;
+    const { username, password, name } = req.body;
   
     const existedUser = await User.findOne({
-      $or: [{ username }, { email }],
+      username,
     });
   
     if (existedUser) {
-      throw new ApiError(409, "User with email or username already exists", []);
+      throw new ApiError(409, "User with username already exists", []);
     }
     const user = await User.create({
-      email,
       password,
       username,
       name,
-      role: role || UserRolesEnum.USER,
     });
   
     await user.save();
@@ -58,14 +55,14 @@ const getUser = asyncHandler(async (req, res) => {
   });
   
   const loginUser = asyncHandler(async (req, res) => {
-    const { email, username, password } = req.body;
+    const { username, password } = req.body;
   
     if (!username && !email) {
       throw new ApiError(400, "Username or email is required");
     }
   
     const user = await User.findOne({
-      $or: [{ username }, { email }],
+      username,
     });
   
     if (!user) {
