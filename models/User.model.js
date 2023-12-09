@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose, { Schema } from "mongoose";
-import { UserRolesEnum, AvailableUserRoles } from "../app.constant.js";
 
 const userSchema = new Schema(
   {
@@ -23,23 +22,8 @@ const userSchema = new Schema(
       trim: true,
       index: true,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
     name: {
       type: String,
-      required: true,
-      trim: true,
-    },
-    role: {
-      type: String,
-      enum: AvailableUserRoles,
-      default: UserRolesEnum.USER,
-      required: true,
     },
     password: {
       type: String,
@@ -63,9 +47,7 @@ userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
       _id: this._id,
-      email: this.email,
       username: this.username,
-      role: this.role,
     },
     process.env.ACCESS_TOKEN_SECRET
   );
