@@ -19,20 +19,22 @@ const getUser = asyncHandler(async (req, res) => {
 
   const registerUser = asyncHandler(async (req, res) => {
     const { username, password, name } = req.body;
-  
+     console.log(username, password, name);
     const existedUser = await User.findOne({
       username,
     });
-  
+    console.log("existedUser", existedUser);
+
     if (existedUser) {
       throw new ApiError(409, "User with username already exists", []);
     }
     const user = await User.create({
       password,
       username,
-      name,
+      name
     });
   
+    console.log("user", user);
     await user.save();
   
     const createdUser = await User.findById(user._id).select(
