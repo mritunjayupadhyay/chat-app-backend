@@ -3,6 +3,7 @@ import { getUser, loginUser, registerUser } from "../controllers/users.controlle
 
 const router = Router();
 
+router.route("/").get((req, res) => res.send("Hello World!"));
 router.route("/user").get(getUser);
 router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
