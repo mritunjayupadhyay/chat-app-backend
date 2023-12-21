@@ -36,7 +36,7 @@ app.use(express.static("public")); // configure static file to save images local
 
 app.use("/api/chats", chatRouter);
 app.use("/api/users", userRouter);
-app.use("/api/message", messageRouter);
+app.use("/api/messages", messageRouter);
 
 initializeSocketIO(io);
 
