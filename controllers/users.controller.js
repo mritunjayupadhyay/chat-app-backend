@@ -19,11 +19,9 @@ const getUser = asyncHandler(async (req, res) => {
 
   const registerUser = asyncHandler(async (req, res) => {
     const { username, password, name } = req.body;
-     console.log(username, password, name);
     const existedUser = await User.findOne({
       username,
     });
-    console.log("existedUser", existedUser);
 
     if (existedUser) {
       throw new ApiError(409, "User with username already exists", []);
@@ -34,7 +32,6 @@ const getUser = asyncHandler(async (req, res) => {
       name
     });
   
-    console.log("user", user);
     await user.save();
   
     const createdUser = await User.findById(user._id).select(
@@ -59,7 +56,7 @@ const getUser = asyncHandler(async (req, res) => {
   const loginUser = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
   
-    if (!username && !email) {
+    if (!username) {
       throw new ApiError(400, "Username or email is required");
     }
   

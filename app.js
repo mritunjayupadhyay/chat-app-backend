@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 import chatRouter from "./routes/chat.routes.js";
 import userRouter from "./routes/users.route.js";
 import messageRouter from "./routes/message.routes.js";
+import uploadRouter from "./routes/upload.routes.js";
 import { errorHandler } from "./middlewares/error.middlewares.js";
 import { initializeSocketIO } from "./socket/index.js";
 import { createServer } from "http";
@@ -26,7 +27,6 @@ const corsOptions = {
   origin: process.env.CORS_ORIGIN,
   credentials: true,
 };
-console.log("corsOptions", corsOptions);
 // global middlewares
 app.use(cors(corsOptions));
 
@@ -37,6 +37,7 @@ app.use(express.static("public")); // configure static file to save images local
 app.use("/api/chats", chatRouter);
 app.use("/api/users", userRouter);
 app.use("/api/messages", messageRouter);
+app.use("/api/uploads", uploadRouter);
 
 initializeSocketIO(io);
 
