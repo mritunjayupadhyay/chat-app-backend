@@ -4,23 +4,26 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { ApiError } from "../utils/ApiError.utils.js";
 import { ApiResponse } from "../utils/ApiResponse.utils.js";
 import { asyncHandler } from "../utils/asyncHandler.utils.js";
-import { v4 as uuidv4 } from 'uuid';
 
+const slugifyString = (str) => {
+    return str.trim().toLowerCase().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/[^a-z0-9-.]/g, '-');
+}
  
 const getSignedUrlFunc = asyncHandler(async (req, res) => {
   
-    const { key } = req.body;    
+    const { fileName, fileType } = req.body;    
  
-    if (!key) {
+    if (!fileName || !fileType || fileName.trim() === '' || fileType.trim() === '') {
         throw new ApiError(404, "file name or key is required");
     }
-    const uuidKey = uuidv4();
-    const objectKey = `${key}/${uuidKey}.png`;
+    const objectKey = `${slugifyString(Date.now().toString())}-${slugifyString(fileName)}`;
 
 
     const presignedUrl = await getSignedUrl(S3, new PutObjectCommand({
         Bucket: process.env.CLOUDFLARE_BUCKET_NAME,
         Key: objectKey, 
+        ContentType: fileType,
+        ACL: 'public-read'
     }), {
         expiresIn: 60 * 5 // 5 minutes
     });
