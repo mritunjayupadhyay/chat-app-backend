@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import { upload } from "../middlewares/multer.middlewares.js";
 import { mongoIdPathVariableValidator } from "../validators/mongodb.validators.js";
 import { validate } from "../validators/validate.js";
 import {
@@ -19,7 +18,6 @@ router
   .route("/:chatId")
   .get(mongoIdPathVariableValidator("chatId"), validate, getAllMessages)
   .post(
-    upload.fields([{ name: "attachments", maxCount: 5 }]),
     mongoIdPathVariableValidator("chatId"),
     sendMessageValidator(),
     validate,

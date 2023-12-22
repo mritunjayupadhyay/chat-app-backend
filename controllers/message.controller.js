@@ -6,7 +6,7 @@ import { emitSocketEvent } from "../socket/index.js";
 import { ApiError } from "../utils/ApiError.utils.js";
 import { ApiResponse } from "../utils/ApiResponse.utils.js";
 import { asyncHandler } from "../utils/asyncHandler.utils.js";
-import { getLocalPath, getStaticFilePath } from "../utils/helpers.js";
+// import { getLocalPath, getStaticFilePath } from "../utils/helpers.js";
 /**
  * @description Utility function which returns the pipeline stages to structure the chat message schema with common lookups
  * @returns {mongoose.PipelineStage[]}
@@ -75,9 +75,9 @@ const getAllMessages = asyncHandler(async (req, res) => {
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { chatId } = req.params;
-  const { content } = req.body;
+  const { content, attachments } = req.body;
 
-  if (!content && !req.files?.attachments?.length) {
+  if (!content && !attachments.length) {
     throw new ApiError(400, "Message content or attachment is required");
   }
 
@@ -87,23 +87,23 @@ const sendMessage = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Chat does not exist");
   }
 
-  const messageFiles = [];
+  // const messageFiles = [];
 
-  if (req.files && req.files.attachments?.length > 0) {
-    req.files.attachments?.map((attachment) => {
-      messageFiles.push({
-        url: getStaticFilePath(req, attachment.filename),
-        localPath: getLocalPath(attachment.filename),
-      });
-    });
-  }
+  // if (req.files && req.files.attachments?.length > 0) {
+  //   req.files.attachments?.map((attachment) => {
+  //     messageFiles.push({
+  //       url: getStaticFilePath(req, attachment.filename),
+  //       localPath: getLocalPath(attachment.filename),
+  //     });
+  //   });
+  // }
 
   // Create a new message instance with appropriate metadata
   const message = await ChatMessage.create({
     sender: new mongoose.Types.ObjectId(req.user._id),
     content: content || "",
     chat: new mongoose.Types.ObjectId(chatId),
-    attachments: messageFiles,
+    attachments: attachments,
   });
 
   // update the chat's last message which could be utilized to show last message in the list item
