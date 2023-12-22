@@ -1,12 +1,16 @@
-import { body } from "express-validator";
+import { body, oneOf } from "express-validator";
 
 const sendMessageValidator = () => {
   return [
-    body("content")
+    oneOf([
+      body("content")
       .trim()
       .optional()
-      .notEmpty()
-      .withMessage("Content is required"),
+      .notEmpty(),
+      body("attachments").isArray(),
+    ], {
+      message: 'At least one of message or attachment must be provided',
+    }),
   ];
 };
 
