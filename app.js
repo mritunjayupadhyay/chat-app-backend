@@ -16,7 +16,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin: process.env.CORS_ORIGIN,
+    origin: [process.env.CORS_ORIGIN, process.env.CORS_ORIGIN2],
     credentials: true,
   },
 });
@@ -24,7 +24,7 @@ const io = new Server(httpServer, {
 app.set("io", io); // using set method to mount the `io` instance on the app to avoid usage of `global`
 
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: [process.env.CORS_ORIGIN, process.env.CORS_ORIGIN2],
   credentials: true,
 };
 // global middlewares
