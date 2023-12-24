@@ -1,5 +1,5 @@
 import {asyncHandler} from "../utils/asyncHandler.utils.js";
-import {User} from "../models/User.model.js";
+import {User, defaultAvatar} from "../models/User.model.js";
 import {ApiError} from "../utils/ApiError.utils.js";
 import {ApiResponse} from "../utils/ApiResponse.utils.js";
 
@@ -18,7 +18,7 @@ const getUser = asyncHandler(async (req, res) => {
   });
 
   const registerUser = asyncHandler(async (req, res) => {
-    const { username, password, name } = req.body;
+    const { username, password, name, avatar = defaultAvatar } = req.body;
     const existedUser = await User.findOne({
       username,
     });
@@ -29,7 +29,8 @@ const getUser = asyncHandler(async (req, res) => {
     const user = await User.create({
       password,
       username,
-      name
+      name,
+      avatar,
     });
   
     await user.save();

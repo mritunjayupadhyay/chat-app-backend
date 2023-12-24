@@ -1,18 +1,12 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose, { Schema } from "mongoose";
-
+export const defaultAvatar = `https://via.placeholder.com/200x200.png`;
 const userSchema = new Schema(
   {
     avatar: {
-      type: {
-        url: String,
-        localPath: String,
-      },
-      default: {
-        url: `https://via.placeholder.com/200x200.png`,
-        localPath: "",
-      },
+      type: String,
+      default: defaultAvatar,
     },
     username: {
       type: String,
