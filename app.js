@@ -41,7 +41,7 @@ app.use("/api/uploads", uploadRouter);
 
 initializeSocketIO(io);
 
-// common error handling middleware
-app.use(errorHandler);
+// // common error handling middleware
+// app.use(errorHandler);
 
 export { httpServer };

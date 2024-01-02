@@ -1,5 +1,5 @@
 import {asyncHandler} from "../utils/asyncHandler.utils.js";
-import {User, defaultAvatar} from "../models/User.model.js";
+import {User, defaultAvatar, UserUpdateFields} from "../models/User.model.js";
 import {ApiError} from "../utils/ApiError.utils.js";
 import {ApiResponse} from "../utils/ApiResponse.utils.js";
 
@@ -16,6 +16,38 @@ const getUser = asyncHandler(async (req, res) => {
         { error: false, data: user },
       );
   });
+
+  const updateUser = asyncHandler(async (req, res) => {
+    
+      const {  username } = req.params;
+       // eslint-disable-next-line no-console
+     
+      //creating a map from the passed array
+      const updateOps = {};
+      // eslint-disable-next-line no-console
+      console.log("username", username, updateOps);
+      for(const key of Object.keys(req.body)){
+         if(UserUpdateFields[key]) {
+          updateOps[key] = req.body[key];
+         }
+      }
+
+     
+    
+      const user = await User.findOneAndUpdate({
+        username,
+      },
+      {
+        $set: updateOps,
+      },
+      { upsert: true }
+      );
+        return res
+          .status(200)
+          .json(
+            { error: false, data: user },
+          );
+  })
 
   const registerUser = asyncHandler(async (req, res) => {
     const { username, password, name, avatar = defaultAvatar } = req.body;
@@ -94,4 +126,4 @@ const getUser = asyncHandler(async (req, res) => {
       );
   });
 
-export { getUser, loginUser, registerUser }
+export { getUser, loginUser, registerUser, updateUser }
