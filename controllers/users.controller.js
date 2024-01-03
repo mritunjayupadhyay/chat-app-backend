@@ -31,9 +31,7 @@ const getUser = asyncHandler(async (req, res) => {
           updateOps[key] = req.body[key];
          }
       }
-
      
-    
       const user = await User.findOneAndUpdate({
         username,
       },
@@ -42,10 +40,17 @@ const getUser = asyncHandler(async (req, res) => {
       },
       { upsert: true }
       );
+      const updatedUser = await User.findById(user._id).select(
+        "-password"
+      );
         return res
           .status(200)
           .json(
-            { error: false, data: user },
+            new ApiResponse(
+              200,
+              { user: updatedUser },
+              "User updated in successfully"
+            )
           );
   })
 
